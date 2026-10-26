@@ -1,14 +1,17 @@
-from flask import Flask, render_template
 import os
+from flask import Flask, render_template
+from flask_bootstrap import Bootstrap5
 from dotenv import load_dotenv
 load_dotenv()
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 
+bootstrap = Bootstrap5(app)
+
 @app.route("/")
 def index():
-    return "Hola, Flask!"
+    return render_template ("index.html")
 
 
 

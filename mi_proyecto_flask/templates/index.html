@@ -1,7 +1,13 @@
-index()
-render_template('index.html')
-
 {% extends 'base.html' %}
+
+{% block title %}Inicio{% endblock %}
+
 {% block content %}
-  <h1>Página de inicio</h1>
+<div class="p-5 mb-4 bg-light rounded-3">
+<h1 class="display-5">Página de inicio</h1>
+<p class="lead">Bienvenido(a) a mi proyecto con Flask, ahora con estilo de
+Bootstrap.</p>
+<a class="btn btn-primary btn-lg" href="{{ url_for('about') }}">Conoce
+más</a>
+</div>
 {% endblock %}
