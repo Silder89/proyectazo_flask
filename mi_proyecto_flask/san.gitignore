@@ -2,3 +2,6 @@
 _pycache__/
 *.pyc
 .env
+
+instance/
+
