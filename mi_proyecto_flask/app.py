@@ -39,12 +39,23 @@ def about():
 
 @app.route("/contacto", methods=["GET", "POST"])
 def contacto():
-   form = ContactoForm()
-   if form.validate_on_submit():
-      flash(f"¡Gracias, {form.nombre.data}! Recibimos tus datos.", "success")
-      return redirect(url_for("contacto"))
-   return render_template("contacto.html", form=form)
+    form = ContactoForm()
+    if form.validate_on_submit():
+        existente = Usuario.query.filter_by(correo=form.correo.data).first()
+        if existente:
+            flash("Ese correo ya está registrado. Prueba con otro.", "warning")
+        else:
+            nuevo = Usuario(nombre=form.nombre.data, correo=form.correo.data)
+            db.session.add(nuevo)
+            db.session.commit()
+            flash(f"¡Registro guardado con éxito, {nuevo.nombre}!", "success")
+            return redirect(url_for("contacto"))
+    return render_template("contacto.html", form=form)
 
+@app.route("/usuarios")
+def usuarios():
+    lista = Usuario.query.order_by(Usuario.id).all()
+    return render_template("usuarios.html", usuarios=lista)
 
 if __name__ == "__main__":
     app.run(debug=True)
