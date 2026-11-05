@@ -16,6 +16,16 @@ app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///proyecto.db"
 bootstrap = Bootstrap5(app)
 db = SQLAlchemy(app)
 
+
+class Usuario(db.Model):
+    id = db.Column(db.Integer , primary_key=True)
+    nombre = db.Column(db.String(80), nullable=False)
+    correo = db.Column(db.String(120), unique=True , nullable=False)
+
+
+with app.app_context():
+   db.create_all()
+
 @app.route("/")
 def index():
     return render_template ("index.html")
