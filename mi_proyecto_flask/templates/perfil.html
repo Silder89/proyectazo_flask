@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block title %}Mi perfil{% endblock %}
+{% block content %}
+<h1 class="h3 mb-3">Mi perfil</h1>
+<p>Hola, <strong>{{ current_user.nombre }}</strong>. Tu correo es
+{{ current_user.correo }}.</p>
+<a class="btn btn-outline-secondary" href="{{ url_for('logout') }}">Cerrar
+sesión</a>
+{% endblock %}

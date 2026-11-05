@@ -13,3 +13,13 @@ class ContactoForm(FlaskForm):
     )
     enviar = SubmitField("Enviar")
 
+
+class LoginForm(FlaskForm):
+    correo = StringField(
+        "Correo",
+        validators=[
+            DataRequired(message="Escribe tu correo"),
+            Email(message="Escribe un correo válido, por ejemplo ana@correo.com"),
+        ],
+    )
+    entrar = SubmitField("Entrar")
