@@ -9,6 +9,8 @@ from flask_login import (
     login_user,
     logout_user,
 )
+from flask_mail import Mail, Message
+
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
 
@@ -21,10 +23,16 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = os.environ.get('SECRET_KEY')
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///proyecto.db"
 
+app.config["MAIL_SERVER"] = "smtp.example.com"
+app.config["MAIL_PORT"] = 587
+app.config["MAIL_DEFAULT_SENDER"] = "proyecto@ejemplo.com"
+app.config["MAIL_SUPPRESS_SEND"] = True
+
 bootstrap = Bootstrap5(app)
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 login_manager.login_view = "login"
+mail = Mail(app)
 
 
 class Usuario(UserMixin, db.Model):
@@ -61,6 +69,10 @@ def contacto():
             nuevo = Usuario(nombre=form.nombre.data, correo=form.correo.data)
             db.session.add(nuevo)
             db.session.commit()
+            mensaje = Message(
+                subject="Confirmación de registro", recipients=[nuevo.correo],body=f"Hola {nuevo.nombre}, tu registro se guardócorrectamente.",)
+            mail.send(mensaje)
+            print("Correo de prueba para:", nuevo.correo)
             flash(f"¡Registro guardado con éxito, {nuevo.nombre}!", "success")
             return redirect(url_for("contacto"))
     return render_template("contacto.html", form=form)
