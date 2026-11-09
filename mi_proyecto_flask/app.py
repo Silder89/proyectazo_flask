@@ -10,6 +10,7 @@ from flask_login import (
     logout_user,
 )
 from flask_mail import Mail, Message
+from flask_migrate import Migrate
 
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
@@ -33,12 +34,14 @@ db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 login_manager.login_view = "login"
 mail = Mail(app)
+migrate = Migrate(app, db)
 
 
 class Usuario(UserMixin, db.Model):
     id = db.Column(db.Integer , primary_key=True)
     nombre = db.Column(db.String(80), nullable=False)
     correo = db.Column(db.String(120), unique=True , nullable=False)
+    grupo = db.Column(db.String(10))
 
 @login_manager.user_loader
 def cargar_usuario(user_id):
