@@ -30,10 +30,11 @@ app.config["MAIL_SUPPRESS_SEND"] = True
 
 bootstrap = Bootstrap5(app)
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 login_manager = LoginManager(app)
 login_manager.login_view = "login"
 mail = Mail(app)
-migrate = Migrate(app, db)
+
 
 
 class Usuario(UserMixin, db.Model):
