@@ -17,12 +17,11 @@ from dotenv import load_dotenv
 
 from forms import ContactoForm, LoginForm
 
-
 load_dotenv()
 app = Flask(__name__)
 
-app.config["SECRET_KEY"] = os.environ.get('SECRET_KEY')
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///proyecto.db"
+app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///proyecto.db"
 
 app.config["MAIL_SERVER"] = "smtp.example.com"
 app.config["MAIL_PORT"] = 587
@@ -38,22 +37,24 @@ migrate = Migrate(app, db)
 
 
 class Usuario(UserMixin, db.Model):
-    id = db.Column(db.Integer , primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(80), nullable=False)
-    correo = db.Column(db.String(120), unique=True , nullable=False)
+    correo = db.Column(db.String(120), unique=True, nullable=False)
     grupo = db.Column(db.String(10))
+
 
 @login_manager.user_loader
 def cargar_usuario(user_id):
-  return db.session.get(Usuario, int(user_id))
+    return db.session.get(Usuario, int(user_id))
+
 
 with app.app_context():
-   db.create_all()
+    db.create_all()
+
 
 @app.route("/")
 def index():
-    return render_template ("index.html")
-
+    return render_template("index.html")
 
 
 @app.route("/about")
@@ -73,17 +74,22 @@ def contacto():
             db.session.add(nuevo)
             db.session.commit()
             mensaje = Message(
-                subject="Confirmación de registro", recipients=[nuevo.correo],body=f"Hola {nuevo.nombre}, tu registro se guardócorrectamente.",)
+                subject="Confirmación de registro",
+                recipients=[nuevo.correo],
+                body=f"Hola {nuevo.nombre}, tu registro se guardócorrectamente.",
+            )
             mail.send(mensaje)
             print("Correo de prueba para:", nuevo.correo)
             flash(f"¡Registro guardado con éxito, {nuevo.nombre}!", "success")
             return redirect(url_for("contacto"))
     return render_template("contacto.html", form=form)
 
+
 @app.route("/usuarios")
 def usuarios():
     lista = Usuario.query.order_by(Usuario.id).all()
     return render_template("usuarios.html", usuarios=lista)
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -96,10 +102,12 @@ def login():
         flash("No encontramos ese correo. Regístrate primero en Contacto.", "warning")
     return render_template("login.html", form=form)
 
+
 @app.route("/perfil")
 @login_required
 def perfil():
-  return render_template("perfil.html")
+    return render_template("perfil.html")
+
 
 @app.route("/logout")
 def logout():
@@ -107,6 +115,6 @@ def logout():
     flash("Cerraste tu sesión.", "info")
     return redirect(url_for("index"))
 
+
 if __name__ == "__main__":
     app.run(debug=True)
-

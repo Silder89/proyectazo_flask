@@ -49,3 +49,27 @@ v mi_proyecto_flask
     requirements.txt
     san.gitignore
 
+
+## Addons utilizados
+
+| Addon | Para qué sirve |
+|-------|----------------|
+| Flask-WTF | Formularios con validaciones |
+| Bootstrap-Flask | Estilo visual de las páginas |
+| Flask-SQLAlchemy | Base de datos SQLite |
+| Flask-login | Para iniciar sesion |
+| Flask-Mail | envia un correo de confirmacion |
+| Flask-Migrate | agrega nuevas columnas sin perder informacion |
+
+## Cómo instalarlo
+
+1. Clona el repositorio y entra a la carpeta.
+2. Crea y activa un entorno virtual.
+3. Instala las dependencias: `pip install -r requirements.txt`
+4. Copia `.env.example` a `.env` y escribe tu propia `SECRET_KEY`.
+5. Ejecuta la aplicación: `python app.py`
+6. Abre http://127.0.0.1:5000
+
+## Cómo ejecutar las pruebas
+
+`python test_app.py`
